@@ -1,0 +1,13 @@
+4
+Black
+5
+30
+Yellow
+10
+30
+Pink
+10
+0
+White
+10
+0

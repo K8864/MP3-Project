@@ -1,0 +1,16 @@
+5
+Yellow
+4
+30
+Red
+4
+30
+Blue
+4
+30
+Green
+4
+30
+Pink
+4
+30
