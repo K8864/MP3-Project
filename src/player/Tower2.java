@@ -19,10 +19,10 @@ public class Tower2 extends Tower{
         rate = 120;
         current = rate;
         dmg = 2;
-        peirce = 1;
+        pierce = 1;
         nextLvlCost = costLvl1;
         nextRate = rate;
-        nextPeirce = peirce;
+        nextPierce = pierce;
         nextRange = 7;
         nextDmg = 3;
         textRange = "" + range + " -> " + nextRange;
@@ -37,6 +37,18 @@ public class Tower2 extends Tower{
         }
         catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void attack() {
+        for(int i=gp.enemies.size()-1; i>=0; i--) {
+            double dist = Math.sqrt((finalX - gp.enemies.get(i).x) * (finalX - gp.enemies.get(i).x) + (finalY - gp.enemies.get(i).y) * (finalY - gp.enemies.get(i).y));
+            if(dist + gp.getTileSize()/3 <= range * gp.getTileSize()) {
+                gp.shots.add(new Bullet(finalX, finalY, (int) gp.enemies.get(i).x, (int) gp.enemies.get(i).y, dmg, pierce, gp));
+                gp.playSE(4, 6);
+                image1 = !(gp.enemies.get(i).x >= finalX);
+                break;
+            }
         }
     }
 
@@ -71,10 +83,10 @@ public class Tower2 extends Tower{
         nextLvlCost = costLvl2;
         nextRange = 8;
         nextDmg = 4;
-        nextPeirce = 2;
+        nextPierce = 2;
         textRange = "" + range + " -> " + nextRange;
         textDmg = "" + dmg + " -> " + nextDmg;
-        textPeirce = "" + peirce + " -> " + nextPeirce;
+        textPierce = "" + pierce + " -> " + nextPierce;
     }
 
     private void lvl2() {
@@ -83,31 +95,30 @@ public class Tower2 extends Tower{
         // range 8
         dmg = nextDmg;
         // dmg 4
-        peirce = nextPeirce;
-        // peirce 2
+        pierce = nextPierce;
+        // pierce 2
         Stats.cash -= costLvl2;
         nextLvlCost = costLvl3;
-        nextDmg = 6;
+        nextDmg = 5;
         nextRange = 9;
         textRange = "" + range + " -> " + nextRange;
-        nextRate = 105;
-        textRate = "" + (double)((int)(((double)rate/60)*100))/100 + " sec -> " + (double)((int)(((double)nextRate/60)*100))/100 + " sec";
+        nextPierce = 3;
         textDmg = "" + dmg + " -> " + nextDmg;
-        textPeirce = null;
+        textPierce = "" + pierce + " -> " + nextPierce;
     }
 
     private void lvl3() {
         range = nextRange;
         rangeCircle.setFrameFromCenter(finalX + gp.getTileSize()/2, finalY + gp.getTileSize()/2, (int)(finalX + range * gp.getTileSize()), (int)(finalY + range * gp.getTileSize()));
         dmg = nextDmg;
-        // dmg 7
-        rate = nextRate;
-        // cool down 105 (1.75 sec)
+        // dmg 5
+        pierce = nextPierce;
+        // pierce 3
         Stats.cash -= costLvl3;
         nextLvlCost = costLvl4;
         nextRange = 10;
-        nextDmg = 11;
-        nextRate = 90;
+        nextDmg = 12;
+        nextRate = 105;
         textRange = "" + range + " -> " + nextRange;
         textRate = "" + (double)((int)(((double)rate/60)*100))/100 + " sec -> " + (double)((int)(((double)nextRate/60)*100))/100 + " sec";
         textDmg = "" + dmg + " -> " + nextDmg;
@@ -118,13 +129,13 @@ public class Tower2 extends Tower{
         rangeCircle.setFrameFromCenter(finalX + gp.getTileSize()/2, finalY + gp.getTileSize()/2, (int)(finalX + range * gp.getTileSize()), (int)(finalY + range * gp.getTileSize()));
         // range 10
         dmg = nextDmg;
-        // dmg 11
+        // dmg 12
         rate = nextRate;
-        // cool down 90 (1.5 sec)
+        // cool down 90 (1.75 sec)
         Stats.cash -= costLvl4;
         nextLvlCost = Integer.MAX_VALUE;
         textRange = null;
         textDmg = null;
-        textPeirce = null;
+        textPierce = null;
     }
 }

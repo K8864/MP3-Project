@@ -9,17 +9,21 @@ import java.util.ArrayList;
 
 public class Bullet extends Entity{
     GamePanel gp;
-    private int endX, endY, damage, hits, totalHits, dist;
-    private double slope, cosine, sine, degrees;
-    private double speed = 17.5;
+    private int hits, dist;
+    private final int damage;
+    private final int totalHits;
+    private final double slope;
+    private final double cosine;
+    private final double sine;
+    private double degrees;
     public boolean end;
-    private ArrayList<Integer> alrHit = new ArrayList<>();
+    private final ArrayList<Integer> alrHit = new ArrayList<>();
 
     public Bullet(int startX, int startY, int endX, int endY, int dmg, int totalHits, GamePanel gp) {
         x = startX;
         y = startY;
-        this.endX = endX;
-        this.endY = endY;
+        //this.endX = endX;
+        //this.endY = endY;
         damage = dmg;
         hits = 0;
         this.totalHits = totalHits;
@@ -27,20 +31,6 @@ public class Bullet extends Entity{
         cosine = (endX - startX)/slope;
         sine = (endY - startY)/slope;
         degrees = Math.asin(sine) * 180 / 3.14159265359;
-        getBulletImage();
-        this.gp = gp;
-    }
-
-    public Bullet(int startX, int startY, double cos, double sin, double slope, int dmg, int totalHits, GamePanel gp) {
-        x = startX;
-        y = startY;
-        cosine = cos;
-        sine = sin;
-        damage = dmg;
-        hits = 0;
-        this.totalHits = totalHits;
-        endX = (int)(cos * slope + startX);
-        endY = (int)(sin * slope + startY);
         getBulletImage();
         this.gp = gp;
     }
@@ -55,12 +45,13 @@ public class Bullet extends Entity{
     }
 
     public void update() {
-        dist += speed;
+        dist += 20;
+        double speed = 20;
         double addX = (speed * cosine);
         double addY = (speed * sine);
         x += addX;
         y += addY;
-        if(x<0 || x>gp.getScreenWidth() || y<0 || y>gp.getScreenHeight())
+        if(x<0 || x>gp.getScreenWidth() || y<0 || y>gp.getScreenHeight() || dist >= 1200)
             end = true;
         for(int i=gp.enemies.size()-1 ;i>=0; i--) {
             if(Math.abs(x - gp.enemies.get(i).x) <= gp.getTileSize()*0.75 &&

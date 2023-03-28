@@ -8,9 +8,9 @@ import java.io.IOException;
 public class Tower3 extends Tower{
     public static int price = 800;
     public static int costLvl1 = 100;
-    public static int costLvl2 = 1000;
-    public static int costLvl3 = 3100;
-    public static int costLvl4 = 8000;
+    public static int costLvl2 = 900;
+    public static int costLvl3 = 2900;
+    public static int costLvl4 = 7500;
 
     public Tower3(GamePanel gp) {
         super(gp);
@@ -24,15 +24,29 @@ public class Tower3 extends Tower{
         nextDmg = dmg;
         nextRange = 6;
         textRange = "" + range + " -> " + nextRange;
+        sellPrice += (price * 0.5);
     }
 
     public void getTowerImage() {
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/towers/MachineGunner.png"));
+            image = ImageIO.read(getClass().getResourceAsStream("/towers/MachineGunner1.png"));
             image2 = ImageIO.read(getClass().getResourceAsStream("/towers/MachineGunner2.png"));
         }
         catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void attack() {
+        for(int i=gp.enemies.size()-1; i>=0; i--) {
+            double dist = Math.sqrt((finalX - gp.enemies.get(i).x) * (finalX - gp.enemies.get(i).x) + (finalY - gp.enemies.get(i).y) * (finalY - gp.enemies.get(i).y));
+            if(dist + gp.getTileSize()/3 <= range * gp.getTileSize()) {
+                Bullet b = new Bullet(finalX, finalY, (int) gp.enemies.get(i).x, (int) gp.enemies.get(i).y, dmg, pierce, gp);
+                gp.shots.add(b);
+                gp.playSE(0, -5);
+                image1 = !(gp.enemies.get(i).x >= finalX);
+                break;
+            }
         }
     }
 

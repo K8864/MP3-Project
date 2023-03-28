@@ -1,6 +1,7 @@
 package main;
 import javax.swing.*;
 
+
 public class Main {
 
     private static JFrame window;

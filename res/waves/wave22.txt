@@ -1,13 +1,10 @@
-4
+3
 Black
 20
 15
 Yellow
-50
-10
-Green
 150
-5
+10
 Zebra
 15
 60

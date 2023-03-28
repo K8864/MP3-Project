@@ -30,6 +30,7 @@ public class GamePanel extends JPanel implements Runnable {
     //game state
     public static int titleState = 0;
     public static int playState = 1;
+    public static int deadState = 2;
     public static int gameState;
 
     //entities
@@ -41,6 +42,7 @@ public class GamePanel extends JPanel implements Runnable {
     private Thread gameThread;
     public TileManager tileM = new TileManager(this);
     private final KeyHandler keyH = new KeyHandler(this);
+    Sound sound = new Sound();
     private final ClickDetection clickD = new ClickDetection(this);
     public UI ui = new UI(this);
     public Waves wave;
@@ -102,6 +104,12 @@ public class GamePanel extends JPanel implements Runnable {
             ui.update();
         }
         else if(gameState == playState) {
+            try {
+                enemies.sort(new EnemyComparator());
+            }
+            catch(Exception e) {
+                System.out.println("modding");
+            }
             if(spawn && frames >= 300) {
                 wave = new Waves(this, 1);
                 spawn = false;
@@ -123,24 +131,31 @@ public class GamePanel extends JPanel implements Runnable {
             }
             clickD.select();
             t = clickD.t;
+            if(Stats.hp <= 0) {
+                Stats.die();
+            }
         }
         Tower.click = false;
         for(int i=0; i<enemies.size(); i++) {
             try {
                 enemies.get(i).update();
                 if(enemies.get(i).dead) {
+                    enemies.set(i, null);
+                    playSE(2, 6);
                     enemies.remove(i);
                     i--;
                 }
             }
             catch (Exception e) {
                 Stats.hp -= enemies.get(i).hp;
+                enemies.set(i, null);
                 enemies.remove(i);
                 i--;
             }
         }
         for(int i=0; i<shots.size(); i++) {
             if((shots.get(i)).end) {
+                shots.set(i, null);
                 shots.remove(i);
                 i--;
             }
@@ -150,6 +165,7 @@ public class GamePanel extends JPanel implements Runnable {
         for (int i=0; i<towers.size(); i++) {
             towers.get(i).update();
             if(towers.get(i).sold) {
+                towers.set(i, null);
                 towers.remove(i);
                 i--;
             }
@@ -167,28 +183,13 @@ public class GamePanel extends JPanel implements Runnable {
         if (keyH.isShowDrawTime())
             drawStart = System.nanoTime();
 
-
-        if(gameState == titleState) {
-            ui.draw(g2);
-        }
-        else if(gameState == playState) {
+        if(gameState != titleState) {
             tileM.draw(g2);
             if (t != null) {
                 if (Tower.selecting)
                     t.draw2(g2);
             }
             try {
-                enemies.sort(new Comparator<>() {
-                    @Override
-                    public int compare(Enemy e1, Enemy e2) {
-                        return Double.compare(e1.getDistanceTraveled(), e2.getDistanceTraveled());
-                    }
-
-                    @Override
-                    public boolean equals(Object obj) {
-                        return false;
-                    }
-                });
                 for(Enemy e : enemies) {
                     e.draw(g2);
                 }
@@ -202,12 +203,12 @@ public class GamePanel extends JPanel implements Runnable {
             catch (Exception e) {
                 System.out.print("");
             }
-            ui.draw(g2);
         }
-
+        ui.draw(g2);
 
         if(keyH.isShowDrawTime()) {
             Stats.cash = 999999;
+            Stats.hp = 250;
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 36F));
             long drawEnd = System.nanoTime();
             long passed = drawEnd - drawStart;
@@ -216,11 +217,26 @@ public class GamePanel extends JPanel implements Runnable {
             g2.drawString("y: " + ClickDetection.y, 10, 450);
             g2.drawString("X: " + ClickDetection.x, 10 , 400);
             g2.drawString("Towers: " + Tower.count, 10, 350);
-            Ellipse2D circle = new Ellipse2D.Double();
-            circle.setFrameFromCenter(ClickDetection.x, ClickDetection.y, ClickDetection.x + 32, ClickDetection.y + 32);
-            g2.draw(circle);
         }
 
         g2.dispose();
+    }
+
+    public void playSE(int i, int v) {
+        sound.setFile(i);
+        sound.scaleVol(v);
+        sound.play();
+    }
+
+    private static class EnemyComparator implements Comparator<Enemy> {
+        @Override
+        public int compare(Enemy e1, Enemy e2) {
+            return Double.compare(e1.getDistanceTraveled(), e2.getDistanceTraveled());
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return false;
+        }
     }
 }

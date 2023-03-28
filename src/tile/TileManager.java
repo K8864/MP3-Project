@@ -10,7 +10,7 @@ import java.io.*;
 public class TileManager {
     GamePanel gp;
     public Tile[] tile;
-    public int mapTileNum[][];
+    public int[][] mapTileNum;
     public static Point[] Turns = {new Point(6-1,12-1), new Point(6-1,8-1), new Point(11-1, 8-1),
     new Point(11-1, 12-1), new Point(14-1, 12-1), new Point(14-1, 10-1), new Point(18-1, 10-1),
     new Point(18-1, 15-1), new Point(22-1, 15-1), new Point(22-1, 6-1), new Point(16-1, 6-1),
@@ -25,25 +25,26 @@ public class TileManager {
     }
 
     public void getTileImage(){
-        setUp(0, "00", false);
-        setUp(1, "01", false);
-        setUp(2, "02", false);
-        setUp(3, "03", false);
-        setUp(4, "04", true);
-        setUp(5, "05", false);
-        setUp(6, "06", false);
-        setUp(7, "07", false);
-        setUp(8, "08", false);
-        setUp(9, "09", false);
+        setUp(0, "00", false, true);
+        setUp(1, "01", false, false);
+        setUp(2, "02", false, true);
+        setUp(3, "03", false, false);
+        setUp(4, "04", true, false);
+        setUp(5, "05", true, false);
+        setUp(6, "06", false, false);
+        setUp(7, "07", false, false);
+        setUp(8, "08", false, false);
+        setUp(9, "09", true, false);
     }
 
-    public void setUp(int index, String imagePath, boolean path) {
+    public void setUp(int index, String imagePath, boolean path, boolean water) {
         UtilityTool uTool = new UtilityTool();
         try {
             tile[index] = new Tile();
             tile[index].setImage(ImageIO.read(getClass().getResourceAsStream("/tiles/" + imagePath + ".png")));
             tile[index].setImage(uTool.scaleImage(tile[index].getImage(), gp.getTileSize(), gp.getTileSize()));
             tile[index].setPath(path);
+            tile[index].setWater(water);
         }
         catch(IOException e) {
             e.printStackTrace();
@@ -59,7 +60,7 @@ public class TileManager {
             while(col < gp.getMaxScreenCol() && row < gp.getMaxScreenRow()) {
                 String line = br.readLine();
                 while(col < gp.getMaxScreenCol()) {
-                    String numbers[] = line.split(" ");
+                    String[] numbers = line.split(" ");
                     int num = Integer.parseInt(numbers[col]);
                     mapTileNum[col][row] = num;
                     col++;

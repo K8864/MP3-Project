@@ -15,6 +15,7 @@ public class KeyHandler implements KeyListener {
     public static boolean press2 = false;
     public static boolean press3 = false;
     public static boolean press4 = false;
+    public static boolean press5 = false;
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
@@ -38,6 +39,7 @@ public class KeyHandler implements KeyListener {
             press2 = false;
             press3 = false;
             press4 = false;
+            press5 = false;
             Tower.selecting = press1;
         }
         else if(code == KeyEvent.VK_2) {
@@ -45,6 +47,7 @@ public class KeyHandler implements KeyListener {
             press2 = !press2;
             press3 = false;
             press4 = false;
+            press5 = false;
             Tower.selecting = press2;
         }
         else if(code == KeyEvent.VK_3) {
@@ -52,6 +55,7 @@ public class KeyHandler implements KeyListener {
             press2 = false;
             press3 = !press3;
             press4 = false;
+            press5 = false;
             Tower.selecting = press3;
         }
         else if(code == KeyEvent.VK_4) {
@@ -59,7 +63,16 @@ public class KeyHandler implements KeyListener {
             press2 = false;
             press3 = false;
             press4 = !press4;
+            press5 = false;
             Tower.selecting = press4;
+        }
+        else if(code == KeyEvent.VK_5) {
+            press1 = false;
+            press2 = false;
+            press3 = false;
+            press4 = false;
+            press5 = !press5;
+            Tower.selecting = press5;
         }
         // Towers
         // Balls
@@ -89,6 +102,9 @@ public class KeyHandler implements KeyListener {
         }
         if(code == KeyEvent.VK_W) {
             gp.enemies.add(new Rainbow(gp));
+        }
+        if(code == KeyEvent.VK_Q) {
+            gp.enemies.add(new Ceramic(gp));
         }
         // Balls
         // Debug

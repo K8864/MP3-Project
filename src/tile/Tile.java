@@ -9,4 +9,7 @@ public class Tile {
     private boolean path = false;
     public boolean isPath() {return path;}
     public void setPath(boolean path) {this.path = path;}
+    private boolean water = false;
+    public boolean isWater() {return water;}
+    public void setWater(boolean water) {this.water = water;}
 }

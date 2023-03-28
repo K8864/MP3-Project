@@ -32,9 +32,9 @@ public class Tower extends Entity{
     public int nextLvlCost;
     public int dmg;
     public int rate;
-    public int peirce = 1;
-    public int nextPeirce = peirce;
-    public String textPeirce;
+    public int pierce = 1;
+    public int nextPierce = pierce;
+    public String textPierce;
     public int nextDmg = dmg;
     public String textDmg;
     public double nextRange = range;
@@ -68,6 +68,7 @@ public class Tower extends Entity{
         finalY = (int)(y - gp.getTileSize()/2);
         hitBox.setFrameFromCenter(finalX + gp.getTileSize()/2, finalY + gp.getTileSize()/2, finalX + gp.getTileSize(), finalY + gp.getTileSize());
         rangeCircle.setFrameFromCenter(finalX + gp.getTileSize()/2, finalY + gp.getTileSize()/2, (int)(finalX + range * gp.getTileSize()), (int)(finalY + range * gp.getTileSize()));
+        gp.playSE(5, 6);
     }
 
     public void draw2(Graphics2D g2) {
@@ -79,7 +80,7 @@ public class Tower extends Entity{
         g2.setColor(new Color(0, 0, 0, 100));
         rangeCircle.setFrameFromCenter(x + gp.getTileSize()/2, y + gp.getTileSize()/2, (int)(x + range * gp.getTileSize()), (int)(y + range * gp.getTileSize()));
         g2.draw(rangeCircle);
-        if(ClickDetection.isPath || !ClickDetection.placeable)
+        if(ClickDetection.isPath || ClickDetection.isWater || ClickDetection.edgeWater || !ClickDetection.placeable)
             g2.setColor(new Color(255, 0, 0, 50));
         else
             g2.setColor(new Color(0, 150, 255, 100));
@@ -102,6 +103,9 @@ public class Tower extends Entity{
         ClickDetection.y <= finalY + gp.getTileSize() ||
         ClickDetection.x >= gp.getScreenWidth() &&
         clicked) {
+            for(int i=0; i<gp.towers.size(); i++) {
+                gp.towers.get(i).clicked = false;
+            }
             clicked = true;
             if(ClickDetection.click &&
             ClickDetection.x >= gp.getScreenWidth() + 50 &&
@@ -137,7 +141,7 @@ public class Tower extends Entity{
         for(int i=gp.enemies.size()-1; i>=0; i--) {
             double dist = Math.sqrt((finalX - gp.enemies.get(i).x) * (finalX - gp.enemies.get(i).x) + (finalY - gp.enemies.get(i).y) * (finalY - gp.enemies.get(i).y));
             if(dist + gp.getTileSize()/3 <= range * gp.getTileSize()) {
-                gp.shots.add(new Bullet(finalX, finalY, (int) gp.enemies.get(i).x, (int) gp.enemies.get(i).y, dmg, peirce, gp));
+                gp.shots.add(new Bullet(finalX, finalY, (int) gp.enemies.get(i).x, (int) gp.enemies.get(i).y, dmg, pierce, gp));
                 image1 = !(gp.enemies.get(i).x >= finalX);
                 break;
             }

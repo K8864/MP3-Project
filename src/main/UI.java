@@ -98,7 +98,7 @@ public class UI {
         y += gp.getTileSize();
         g2.drawString(text, x, y);
 
-        text = "Peirce: " + t.peirce;
+        text = "Pierce: " + t.pierce;
         x = centerSideX(text, g2);
         y += gp.getTileSize();
         g2.drawString(text, x, y);
@@ -157,12 +157,12 @@ public class UI {
             g2.drawString(text, x, y);
         }
 
-        if(t.textPeirce != null) {
-            text = "Peirce";
+        if(t.textPierce != null) {
+            text = "Pierce";
             x = centerSideX(text, g2);
             y += gp.getTileSize();
             g2.drawString(text, x, y);
-            text = t.textPeirce;
+            text = t.textPierce;
             x = centerSideX(text, g2);
             y += gp.getTileSize() * .75;
             g2.drawString(text, x, y);
@@ -205,14 +205,12 @@ public class UI {
 
     public int centerX(String text) {
         int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-        int x = (gp.getScreenWidth()+200)/2 - length/2;
-        return x;
+        return (gp.getScreenWidth()+200)/2 - length/2;
     }
 
     public int centerSideX(String text, Graphics2D g2) {
         int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getCenterX();
-        int x = gp.getScreenWidth() + (100 - (length));
-        return x;
+        return gp.getScreenWidth() + (100 - (length));
     }
 
     public void update() {

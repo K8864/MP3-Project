@@ -1,9 +1,11 @@
 package main;
 
+import enemies.Enemy;
 import player.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Comparator;
 
 public class ClickDetection implements MouseListener {
     GamePanel gp;
@@ -13,24 +15,27 @@ public class ClickDetection implements MouseListener {
     public static boolean click = false;
     private static int count = 0;
     public static boolean isPath;
+    public static boolean isWater;
+    public static boolean edgeWater;
     public static boolean placeable;
 
     public void update() {
         x = MouseInfo.getPointerInfo().getLocation().x- Main.getWindow().getLocation().x-7;
         y = MouseInfo.getPointerInfo().getLocation().y-Main.getWindow().getLocation().y-30;
-        if(count == 5) {
+        if(count >= 5) {
             click = false;
             count = 0;
         }
         count++;
         onPath();
+        onWater();
         canPlace();
     }
 
     public void select() {
         if (KeyHandler.press1 && Stats.cash >= Tower1.price) {
             t = new Tower1(gp);
-            if (ClickDetection.click && !ClickDetection.isPath && ClickDetection.placeable) {
+            if (ClickDetection.click && !ClickDetection.isPath && !isWater && !edgeWater && ClickDetection.placeable) {
                 Tower.selecting = false;
                 KeyHandler.press1 = false;
                 Tower1 tower = (Tower1)t;
@@ -38,11 +43,12 @@ public class ClickDetection implements MouseListener {
                 gp.towers.add(tower);
                 Tower.count++;
                 Stats.cash -= Tower1.price;
+                sortTowers();
             }
         }
         else if(KeyHandler.press2 && Stats.cash >= Tower2.price) {
             t = new Tower2(gp);
-            if (ClickDetection.click && !ClickDetection.isPath && ClickDetection.placeable) {
+            if (ClickDetection.click && !ClickDetection.isPath && !isWater && !edgeWater && ClickDetection.placeable) {
                 Tower.selecting = false;
                 KeyHandler.press2 = false;
                 Tower2 tower = (Tower2)t;
@@ -50,11 +56,12 @@ public class ClickDetection implements MouseListener {
                 gp.towers.add(tower);
                 Tower.count++;
                 Stats.cash -= Tower2.price;
+                sortTowers();
             }
         }
         else if(KeyHandler.press3 && Stats.cash >= Tower3.price) {
             t = new Tower3(gp);
-            if (ClickDetection.click && !ClickDetection.isPath && ClickDetection.placeable) {
+            if (ClickDetection.click && !ClickDetection.isPath && !isWater && !edgeWater && ClickDetection.placeable) {
                 Tower.selecting = false;
                 KeyHandler.press3 = false;
                 Tower3 tower = (Tower3) t;
@@ -62,11 +69,12 @@ public class ClickDetection implements MouseListener {
                 gp.towers.add(tower);
                 Tower.count++;
                 Stats.cash -= Tower3.price;
+                sortTowers();
             }
         }
         else if(KeyHandler.press4 && Stats.cash >= Tower4.price) {
             t = new Tower4(gp);
-            if (ClickDetection.click && !ClickDetection.isPath && ClickDetection.placeable) {
+            if (ClickDetection.click && !ClickDetection.isPath && !isWater && !edgeWater && ClickDetection.placeable) {
                 Tower.selecting = false;
                 KeyHandler.press4 = false;
                 Tower4 tower = (Tower4) t;
@@ -74,6 +82,20 @@ public class ClickDetection implements MouseListener {
                 gp.towers.add(tower);
                 Tower.count++;
                 Stats.cash -= Tower4.price;
+                sortTowers();
+            }
+        }
+        else if(KeyHandler.press5 && Stats.cash >= Tower5.price) {
+            t = new Tower5(gp);
+            if (ClickDetection.click && !ClickDetection.isPath && isWater && !edgeWater && ClickDetection.placeable) {
+                Tower.selecting = false;
+                KeyHandler.press5 = false;
+                Tower5 tower = (Tower5) t;
+                tower.finalizeThings();
+                gp.towers.add(tower);
+                Tower.count++;
+                Stats.cash -= Tower5.price;
+                sortTowers();
             }
         }
         else
@@ -102,19 +124,57 @@ public class ClickDetection implements MouseListener {
         }
     }
 
+    public void onWater() {
+        try {
+            if (gp.tileM.tile[gp.tileM.mapTileNum[(int)(x - gp.getTileSize()/4.5) / gp.getTileSize()][y / gp.getTileSize()]].isWater() &&
+            gp.tileM.tile[gp.tileM.mapTileNum[(int)(x + gp.getTileSize()/4.5) / gp.getTileSize()][y / gp.getTileSize()]].isWater() &&
+            gp.tileM.tile[gp.tileM.mapTileNum[(int)(x - gp.getTileSize()/4.5) / gp.getTileSize()][(int)(y + gp.getTileSize()/2.2) / gp.getTileSize()]].isWater() &&
+            gp.tileM.tile[gp.tileM.mapTileNum[(int)(x + gp.getTileSize()/4.5) / gp.getTileSize()][(int)(y + gp.getTileSize()/2.2) / gp.getTileSize()]].isWater()) {
+                isWater = true;
+                edgeWater = false;
+            }
+            else if (gp.tileM.tile[gp.tileM.mapTileNum[(int)(x) / gp.getTileSize()][y / gp.getTileSize()]].isWater() ||
+            gp.tileM.tile[gp.tileM.mapTileNum[(int)(x) / gp.getTileSize()][(int)(y + gp.getTileSize()/2.2) / gp.getTileSize()]].isWater()) {
+                edgeWater = true;
+                isWater = false;
+            }
+            else {
+                isWater = false;
+                edgeWater = false;
+            }
+        }
+        catch (Exception e) {
+            isWater = true;
+        }
+    }
+
     public void canPlace() {
         if(Tower.selecting) {
             placeable = true;
             for (Tower e : gp.towers) {
-                if(ClickDetection.x >= e.getFinalX() - gp.getTileSize()*.5*.49 &&
-                ClickDetection.x <= e.getFinalX() + gp.getTileSize()*1.5*.82 &&
-                ClickDetection.y >= e.getFinalY() - gp.getTileSize()*.5 &&
-                ClickDetection.y <= e.getFinalY() + gp.getTileSize()*1.5) {
+                if(ClickDetection.x >= e.getFinalX() &&
+                ClickDetection.x <= e.getFinalX() + gp.getTileSize() &&
+                ClickDetection.y >= e.getFinalY() &&
+                ClickDetection.y <= e.getFinalY() + gp.getTileSize()) {
                     placeable = false;
                     break;
                 }
             }
         }
+    }
+
+    public void sortTowers() {
+        gp.towers.sort(new Comparator<>() {
+            @Override
+            public int compare(Tower e1, Tower e2) {
+                return Double.compare(e1.getFinalY(), e2.getFinalY());
+            }
+
+            @Override
+            public boolean equals(Object obj) {
+                return false;
+            }
+        });
     }
 
     @Override

@@ -69,6 +69,8 @@ public class Waves {
                     gp.enemies.add(new Zebra(gp));
                 else if(spawns.get(0).get(0).equals("Rainbow"))
                     gp.enemies.add(new Rainbow(gp));
+                else if(spawns.get(0).get(0).equals("Ceramic"))
+                    gp.enemies.add(new Ceramic(gp));
                 spawns.remove(0);
             }
         }
