@@ -1,6 +1,7 @@
 package enemies;
 
 import main.GamePanel;
+import player.Entity;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -22,5 +23,12 @@ public class Zebra extends Enemy{
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String toString() {
+        return "ball";
+    }
+    public boolean equals(Entity other) {
+        return other == this;
     }
 }

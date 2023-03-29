@@ -20,6 +20,7 @@ public class Bullet extends Entity{
     private final ArrayList<Integer> alrHit = new ArrayList<>();
 
     public Bullet(int startX, int startY, int endX, int endY, int dmg, int totalHits, GamePanel gp) {
+        super();
         x = startX;
         y = startY;
         //this.endX = endX;
@@ -94,5 +95,12 @@ public class Bullet extends Entity{
 
     public void draw(Graphics2D g2, int tileSize) {
         g2.drawImage(image, (int)x, (int)y, tileSize, tileSize, null);
+    }
+
+    public String toString() {
+        return "1";
+    }
+    public boolean equals(Entity other) {
+        return other == this;
     }
 }

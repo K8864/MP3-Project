@@ -45,7 +45,7 @@ public class Waves {
 
     public void update() {
         frames++;
-        if((spawns.size()==0 && checkDone()) || (nextWave<18 && frames>=1800) || (nextWave>=18 && frames>=2700)) {
+        if((spawns.size()==0 && checkDone()) || (nextWave<18 && frames>=1800) || (nextWave != 30 && nextWave>=18 && frames>=2700)) {
             done = true;
         }
         else if(spawns.size() != 0){

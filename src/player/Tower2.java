@@ -27,6 +27,8 @@ public class Tower2 extends Tower{
         nextDmg = 3;
         textRange = "" + range + " -> " + nextRange;
         textDmg = "" + dmg + " -> " + nextDmg;
+        textPierce = pierce + "";
+        textRate = (double)((int)(((double)rate/60)*100))/100 + "sec";
         sellPrice += (price * 0.5);
     }
 
@@ -122,6 +124,7 @@ public class Tower2 extends Tower{
         textRange = "" + range + " -> " + nextRange;
         textRate = "" + (double)((int)(((double)rate/60)*100))/100 + " sec -> " + (double)((int)(((double)nextRate/60)*100))/100 + " sec";
         textDmg = "" + dmg + " -> " + nextDmg;
+        textPierce = pierce + "";
     }
 
     private void lvl4() {
@@ -134,8 +137,15 @@ public class Tower2 extends Tower{
         // cool down 90 (1.75 sec)
         Stats.cash -= costLvl4;
         nextLvlCost = Integer.MAX_VALUE;
-        textRange = null;
-        textDmg = null;
-        textPierce = null;
+        textRange = range + "";
+        textDmg = dmg + "";
+        textRate = (double)((int)(((double)rate/60)*100))/100 + "sec";
+    }
+
+    public String toString() {
+        return "a";
+    }
+    public boolean equals(Entity other) {
+        return other == this;
     }
 }

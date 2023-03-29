@@ -24,6 +24,9 @@ public class Tower3 extends Tower{
         nextDmg = dmg;
         nextRange = 6;
         textRange = "" + range + " -> " + nextRange;
+        textDmg = dmg + "";
+        textRate = (double)((int)(((double)rate/60)*100))/100 + "sec";
+        textPierce = pierce + "";
         sellPrice += (price * 0.5);
     }
 
@@ -79,10 +82,10 @@ public class Tower3 extends Tower{
         Stats.cash -= costLvl1;
         nextLvlCost = costLvl2;
         nextDmg = 2;
-        textRange = null;
+        textRange = range + "";
         nextRate = 12;
-        textDmg = "" + dmg + " -> " + nextDmg;
-        textRate = "" + (double)((int)(((double)rate/60)*100))/100 + " sec -> " + (double)((int)(((double)nextRate/60)*100))/100 + " sec";
+        textDmg = dmg + " -> " + nextDmg;
+        textRate = (double)((int)(((double)rate/60)*100))/100 + " sec -> " + (double)((int)(((double)nextRate/60)*100))/100 + " sec";
     }
 
     private void lvl2() {
@@ -94,8 +97,8 @@ public class Tower3 extends Tower{
         nextLvlCost = costLvl3;
         nextRate = 9;
         nextDmg = 5;
-        textRate = "" + (double)((int)(((double)rate/60)*100))/100 + " sec -> " + (double)((int)(((double)nextRate/60)*100))/100 + " sec";
-        textDmg = "" + dmg + " -> " + nextDmg;
+        textRate = (double)((int)(((double)rate/60)*100))/100 + " sec -> " + (double)((int)(((double)nextRate/60)*100))/100 + " sec";
+        textDmg = dmg + " -> " + nextDmg;
     }
 
     private void lvl3() {
@@ -123,8 +126,15 @@ public class Tower3 extends Tower{
         // dmg 10
         Stats.cash -= costLvl4;
         nextLvlCost = Integer.MAX_VALUE;
-        textRange = null;
-        textRate = null;
-        textDmg = null;
+        textRange = range + "";
+        textRate = (double)((int)(((double)rate/60)*100))/100 + "sec";
+        textDmg = dmg + "";
+    }
+
+    public String toString() {
+        return "h";
+    }
+    public boolean equals(Entity other) {
+        return other == this;
     }
 }

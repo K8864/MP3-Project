@@ -22,6 +22,10 @@ public class Tower4 extends Tower{
         pierce = 1;
         nextLvlCost = costLvl1;
         textPierce = 3 + " shots" + " -> " + 5 + " shots";
+        textRate = (double)((int)(((double)rate/60)*100))/100 + "sec";
+        textDmg = dmg + "";
+        textRange = range + "";
+        hasSpread = true;
         sellPrice += (price * 0.5);
     }
 
@@ -86,7 +90,7 @@ public class Tower4 extends Tower{
         textRange = "" + range + " -> " + nextRange;
         nextRate = 39;
         textRate = (double)((int)(((double)rate/60)*100))/100 + " sec -> " + (double)((int)(((double)nextRate/60)*100))/100 + " sec";
-        textPierce = null;
+        textPierce = 5 + "";
     }
 
     private void lvl2() {
@@ -114,10 +118,10 @@ public class Tower4 extends Tower{
         nextLvlCost = costLvl4;
         nextDmg = 2;
         textDmg = "" + dmg + " -> " + nextDmg;
-        textRange = null;
+        textRange = range + "";
         nextRate = 24;
         textRate = (double)((int)(((double)rate/60)*100))/100 + " sec -> " + (double)((int)(((double)nextRate/60)*100))/100 + " sec";
-        textPierce = null;
+        textPierce = 11 + "";
     }
 
     private void lvl4() {
@@ -127,6 +131,14 @@ public class Tower4 extends Tower{
         // cool down 24 (0.4 sec)
         Stats.cash -= costLvl4;
         nextLvlCost = Integer.MAX_VALUE;
-        textDmg = null;
+        textRate = (double)((int)(((double)rate/60)*100))/100 + "sec";
+        textDmg = dmg + "";
+    }
+
+    public String toString() {
+        return "l";
+    }
+    public boolean equals(Entity other) {
+        return other == this;
     }
 }

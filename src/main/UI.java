@@ -1,6 +1,7 @@
 package main;
 
 import player.*;
+import waves.Waves;
 
 import java.awt.*;
 
@@ -10,6 +11,7 @@ public class UI {
     private Graphics2D g2;
     private int commandNum = 2;
     private boolean play = true;
+    public int boxY;
 
     public UI(GamePanel gp) {
         this.gp = gp;
@@ -23,25 +25,143 @@ public class UI {
             drawTitleScreen();
         }
         else if(GamePanel.gameState == GamePanel.playState) {
-            g2.setColor(Color.orange);
-            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48F));
-            g2.drawString("$" + Stats.cash, 25, 128);
-            g2.setColor(Color.BLACK);
-            g2.fillRect(25, 32, (int)(Stats.maxHp * 1.6), (int)(gp.getTileSize()*1.5));
-            g2.setColor(Color.RED);
-            g2.fillRect(25, 32, (int)(Stats.hp * 1.6), (int)(gp.getTileSize()*1.5));
-            g2.setColor(Color.WHITE);
-            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48F));
-            g2.drawString("HP: " + Stats.hp, 25, 72);
             if(!Tower.click)
                 drawSide();
+            g2.setColor(Color.GREEN);
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+            g2.drawString("$" + Stats.cash, centerSideX("$" + Stats.cash, g2), gp.getScreenHeight()-gp.getTileSize());
+            g2.setColor(Color.BLACK);
+            g2.fillRect(gp.getScreenWidth() + 25, gp.getScreenHeight() - gp.getTileSize()*3, (int)(Stats.maxHp * 0.6), (gp.getTileSize()));
+            g2.setColor(Color.RED);
+            g2.fillRect(gp.getScreenWidth() + 25, gp.getScreenHeight() - gp.getTileSize()*3, (int)(Stats.hp * 0.6), (gp.getTileSize()));
+            g2.setColor(Color.WHITE);
+            g2.drawString("HP: " + Stats.hp, gp.getScreenWidth() + 25, gp.getScreenHeight() - (int)(gp.getTileSize()*2.25));
         }
-
+        else {
+            drawDeadScreen();
+            drawSide();
+            g2.setColor(Color.GREEN);
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+            g2.drawString("$" + Stats.cash, centerSideX("$" + Stats.cash, g2), gp.getScreenHeight()-gp.getTileSize());
+            g2.setColor(Color.BLACK);
+            g2.fillRect(gp.getScreenWidth() + 25, gp.getScreenHeight() - gp.getTileSize()*3, (int)(Stats.maxHp * 0.6), (gp.getTileSize()));
+            g2.setColor(Color.RED);
+            g2.fillRect(gp.getScreenWidth() + 25, gp.getScreenHeight() - gp.getTileSize()*3, (int)(Stats.hp * 0.6), (gp.getTileSize()));
+            g2.setColor(Color.WHITE);
+            g2.drawString("HP: " + Stats.hp, gp.getScreenWidth() + 25, gp.getScreenHeight() - (int)(gp.getTileSize()*2.25));
+        }
     }
 
     public void drawSide() {
         g2.setColor(new Color(172, 153, 7));
         g2.fillRect(gp.getScreenWidth(), 0, 200, gp.getScreenHeight());
+        Tower1 t1 = new Tower1(gp);
+        Tower2 t2 = new Tower2(gp);
+        Tower3 t3 = new Tower3(gp);
+        Tower4 t4 = new Tower4(gp);
+        Tower5 t5 = new Tower5(gp);
+        int size = (int)(gp.getTileSize()*1.5);
+        int add = (int)(gp.getTileSize()*.25);
+        //tower 1
+        int x = gp.getScreenWidth() + (int)(200-2*gp.getTileSize()*1.5)/3;
+        int y = (int)(gp.getTileSize()-gp.getTileSize()*.25);
+        if(Stats.cash >= 100)
+            g2.setColor(new Color(0, 150, 255));
+        else
+            g2.setColor(new Color(255, 40, 0));
+        g2.fillRect(x, y, size, size);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 14F));
+        g2.setColor(Color.BLACK);
+        g2.drawString("1", x, y-5);
+        x += add;
+        y += add;
+        t1.display(g2, x, y);
+        g2.setColor(Color.GREEN);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
+        x -= 7;
+        y += 2*gp.getTileSize();
+        g2.drawString("$100", x, y);
+        y -= 2*gp.getTileSize();
+        // tower 2
+        x = gp.getScreenWidth() + 2 * (int)(200-2*gp.getTileSize()*1.5)/3 + (int)(gp.getTileSize()*1.5);
+        y -= add;
+        if(Stats.cash >= 300)
+            g2.setColor(new Color(0, 150, 255));
+        else
+            g2.setColor(new Color(255, 40, 0));
+        g2.fillRect(x, y, size, size);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 14F));
+        g2.setColor(Color.BLACK);
+        g2.drawString("2", x, y-5);
+        x += add;
+        y += add;
+        t2.display(g2, x, y);
+        g2.setColor(Color.GREEN);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
+        x -= 7;
+        y += 2*gp.getTileSize();
+        g2.drawString("$300", x, y);
+        y -= 2*gp.getTileSize();
+        // tower 3
+        x = gp.getScreenWidth() + (int)(200-2*gp.getTileSize()*1.5)/3;
+        y += 3*gp.getTileSize();
+        if(Stats.cash >= 800)
+            g2.setColor(new Color(0, 150, 255));
+        else
+            g2.setColor(new Color(255, 40, 0));
+        g2.fillRect(x, y, size, size);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 14F));
+        g2.setColor(Color.BLACK);
+        g2.drawString("3", x, y-5);
+        x += add;
+        y += add;
+        t3.display(g2, x, y);
+        g2.setColor(Color.GREEN);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
+        x -= 7;
+        y += 2*gp.getTileSize();
+        g2.drawString("$800", x, y);
+        y -= 2*gp.getTileSize();
+        // tower 4
+        x = gp.getScreenWidth() + 2 * (int)(200-2*gp.getTileSize()*1.5)/3 + (int)(gp.getTileSize()*1.5);
+        y -= add;
+        if(Stats.cash >= 250)
+            g2.setColor(new Color(0, 150, 255));
+        else
+            g2.setColor(new Color(255, 40, 0));
+        g2.fillRect(x, y, size, size);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 14F));
+        g2.setColor(Color.BLACK);
+        g2.drawString("4", x, y-5);
+        x += add;
+        y += add;
+        t4.display(g2, x, y);
+        g2.setColor(Color.GREEN);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
+        x -= 7;
+        y += 2*gp.getTileSize();
+        g2.drawString("$250", x, y);
+        y -= 2*gp.getTileSize();
+        // tower 5
+        x = gp.getScreenWidth() + (int)(200-2*gp.getTileSize()*1.5)/3;
+        y += 3*gp.getTileSize();
+        if(Stats.cash >= 500)
+            g2.setColor(new Color(0, 150, 255));
+        else
+            g2.setColor(new Color(255, 40, 0));
+        g2.fillRect(x, y, size, size);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 14F));
+        g2.setColor(Color.BLACK);
+        g2.drawString("5", x, y-5);
+        x += add;
+        y += add;
+        t5.display(g2, x, y);
+        g2.setColor(Color.GREEN);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
+        x -= 7;
+        y += 2*gp.getTileSize();
+        g2.drawString("$800", x, y);
+        y -= 2*gp.getTileSize();
     }
 
     public void drawTowerStats(Tower t, Graphics2D g2) {
@@ -83,24 +203,43 @@ public class UI {
 
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20F));
         g2.setColor(Color.BLACK);
-        text = "Damage: " + t.dmg;
+        text = "Damage:";
         x = centerSideX(text, g2);
         y += gp.getTileSize() * 2 - 2;
         g2.drawString(text, x, y);
+        text = t.textDmg;
+        x = centerSideX(text, g2);
+        y += gp.getTileSize()*0.75;
+        g2.drawString(text, x, y);
 
-        text = "Range: " + t.range;
+        text = "Range:";
         x = centerSideX(text, g2);
         y += gp.getTileSize();
         g2.drawString(text, x, y);
+        text = t.textRange;
+        x = centerSideX(text, g2);
+        y += gp.getTileSize()*0.75;
+        g2.drawString(text, x, y);
 
-        text = "Fire Rate: " + (double)((int)(((double)t.rate/60)*100))/100 + " sec";
+        text = "Fire Rate:";
         x = centerSideX(text, g2);
         y += gp.getTileSize();
         g2.drawString(text, x, y);
+        text = t.textRate;
+        x = centerSideX(text, g2);
+        y += gp.getTileSize()*0.75;
+        g2.drawString(text, x, y);
 
-        text = "Pierce: " + t.pierce;
+        if(!t.hasSpread)
+            text = "Pierce:";
+        else
+            text = "Shots:";
         x = centerSideX(text, g2);
         y += gp.getTileSize();
+        g2.drawString(text, x, y);
+        text = t.textPierce;
+        x = centerSideX(text, g2);
+        y += gp.getTileSize()*0.75;
         g2.drawString(text, x, y);
 
         text = "Upgrade";
@@ -111,6 +250,7 @@ public class UI {
         g2.setColor(Color.GREEN);
         x = gp.getScreenWidth() + 50;
         y += gp.getTileSize()*.5;
+        boxY = y;
         g2.fillRoundRect(x, y, 100, (int)(gp.getTileSize()*1.25), 20, 20);
 
         text = "$" + t.nextLvlCost;
@@ -119,54 +259,6 @@ public class UI {
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 14F));
         x = centerSideX(text, g2);
         g2.drawString(text, x, y);
-
-        g2.setColor(Color.BLACK);
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20F));
-        y += gp.getTileSize() * 0.5;
-
-        if(t.textRange != null) {
-            text = "Range";
-            x = centerSideX(text, g2);
-            y += gp.getTileSize();
-            g2.drawString(text, x, y);
-            text = t.textRange;
-            x = centerSideX(text, g2);
-            y += gp.getTileSize() * .75;
-            g2.drawString(text, x, y);
-        }
-
-        if(t.textRate != null) {
-            text = "Fire Rate";
-            x = centerSideX(text, g2);
-            y += gp.getTileSize();
-            g2.drawString(text, x, y);
-            text = t.textRate;
-            x = centerSideX(text, g2);
-            y += gp.getTileSize() * .75;
-            g2.drawString(text, x, y);
-        }
-
-        if(t.textDmg != null) {
-            text = "Damage";
-            x = centerSideX(text, g2);
-            y += gp.getTileSize();
-            g2.drawString(text, x, y);
-            text = t.textDmg;
-            x = centerSideX(text, g2);
-            y += gp.getTileSize() * .75;
-            g2.drawString(text, x, y);
-        }
-
-        if(t.textPierce != null) {
-            text = "Pierce";
-            x = centerSideX(text, g2);
-            y += gp.getTileSize();
-            g2.drawString(text, x, y);
-            text = t.textPierce;
-            x = centerSideX(text, g2);
-            y += gp.getTileSize() * .75;
-            g2.drawString(text, x, y);
-        }
     }
 
     public void drawTitleScreen() {
@@ -201,6 +293,22 @@ public class UI {
             g2.setColor(Color.GRAY);
             g2.drawRect((int)(x-gp.getTileSize()*1.5), (int)(y-gp.getTileSize()*1.5), (int)(g2.getFontMetrics().getStringBounds(text, g2).getWidth()*1.5), (int)(gp.getTileSize()*1.5+16));
         }
+    }
+
+    public void drawDeadScreen() {
+        g2.setColor(new Color(0, 0, 0, 150));
+        g2.fillRect(0, 0, gp.getScreenWidth(), gp.getScreenHeight());
+        g2.setColor(Color.RED);
+        String text = "GGs, you survived " + (gp.wave.nextWave-1) + " waves";
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48F));
+        int x = centerX(text) - 100;
+        int y = gp.getScreenHeight()/2 - gp.getTileSize();
+        g2.drawString(text, x, y);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 36F));
+        g2.setColor(Color.WHITE);
+        y += gp.getTileSize() * 2;
+        x = centerX(text) - 60;
+        g2.drawString("(You kinda suck ngl)", x, y);
     }
 
     public int centerX(String text) {

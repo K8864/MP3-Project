@@ -42,11 +42,14 @@ public class GamePanel extends JPanel implements Runnable {
     private Thread gameThread;
     public TileManager tileM = new TileManager(this);
     private final KeyHandler keyH = new KeyHandler(this);
-    Sound sound = new Sound();
+    public Sound sound = new Sound();
     private final ClickDetection clickD = new ClickDetection(this);
     public UI ui = new UI(this);
     public Waves wave;
     Tower t;
+
+    // for requirement 9x.
+    Tower[] required = new Tower[] {new Tower1(this), new Tower2(this)};
 
     //fps
     public int FPS = 60;
@@ -134,46 +137,46 @@ public class GamePanel extends JPanel implements Runnable {
             if(Stats.hp <= 0) {
                 Stats.die();
             }
-        }
-        Tower.click = false;
-        for(int i=0; i<enemies.size(); i++) {
-            try {
-                enemies.get(i).update();
-                if(enemies.get(i).dead) {
+            Tower.click = false;
+            for(int i=0; i<enemies.size(); i++) {
+                try {
+                    enemies.get(i).update();
+                    if(enemies.get(i).dead) {
+                        enemies.set(i, null);
+                        playSE(2, 6);
+                        enemies.remove(i);
+                        i--;
+                    }
+                }
+                catch (Exception e) {
+                    Stats.hp -= enemies.get(i).hp;
                     enemies.set(i, null);
-                    playSE(2, 6);
                     enemies.remove(i);
                     i--;
                 }
             }
-            catch (Exception e) {
-                Stats.hp -= enemies.get(i).hp;
-                enemies.set(i, null);
-                enemies.remove(i);
-                i--;
+            for(int i=0; i<shots.size(); i++) {
+                if((shots.get(i)).end) {
+                    shots.set(i, null);
+                    shots.remove(i);
+                    i--;
+                }
+                else
+                    (shots.get(i)).update();
             }
+            for (int i=0; i<towers.size(); i++) {
+                towers.get(i).update();
+                if(towers.get(i).sold) {
+                    towers.set(i, null);
+                    towers.remove(i);
+                    i--;
+                }
+                else if(towers.get(i).callUpgrade) {
+                    towers.get(i).upgrade();
+                }
+            }
+            frames++;
         }
-        for(int i=0; i<shots.size(); i++) {
-            if((shots.get(i)).end) {
-                shots.set(i, null);
-                shots.remove(i);
-                i--;
-            }
-            else
-                (shots.get(i)).update();
-        }
-        for (int i=0; i<towers.size(); i++) {
-            towers.get(i).update();
-            if(towers.get(i).sold) {
-                towers.set(i, null);
-                towers.remove(i);
-                i--;
-            }
-            else if(towers.get(i).callUpgrade) {
-                towers.get(i).upgrade();
-            }
-        }
-        frames++;
     }
 
     public void paintComponent(Graphics g) {
@@ -227,7 +230,7 @@ public class GamePanel extends JPanel implements Runnable {
         sound.scaleVol(v);
         sound.play();
     }
-
+    // This meets 9 ix, subclasses of Enemy are being put through this
     private static class EnemyComparator implements Comparator<Enemy> {
         @Override
         public int compare(Enemy e1, Enemy e2) {

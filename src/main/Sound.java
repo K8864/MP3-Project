@@ -1,17 +1,13 @@
 package main;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.*;
 import java.net.URL;
 
-public class Sound {
+public class Sound{
 
     public Clip clip;
     URL[] soundURL = new URL[10];
     FloatControl fc;
-
 
     public Sound() {
         soundURL[0] = getClass().getResource("/sounds/MachineGun.wav");

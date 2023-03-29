@@ -5,6 +5,7 @@ import main.GamePanel;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
 
 public class Tower extends Entity{
     public static boolean click;
@@ -41,6 +42,7 @@ public class Tower extends Entity{
     public String textRange;
     public int nextRate = rate;
     public String textRate;
+    public boolean hasSpread;
 
     public Tower(GamePanel gp) {
         this.gp = gp;
@@ -61,6 +63,10 @@ public class Tower extends Entity{
             g2.draw(rangeCircle);
             gp.ui.drawTowerStats(this, g2);
         }
+    }
+
+    public void display(Graphics2D g2, int x, int y) {
+        g2.drawImage(image, x, y, gp.getTileSize(), gp.getTileSize(), null);
     }
 
     public void finalizeThings() {
@@ -110,8 +116,8 @@ public class Tower extends Entity{
             if(ClickDetection.click &&
             ClickDetection.x >= gp.getScreenWidth() + 50 &&
             ClickDetection.x <= gp.getScreenWidth() + 150 &&
-            ClickDetection.y >= gp.getTileSize()*9 &&
-            ClickDetection.y <= gp.getTileSize()*10.25 &&
+            ClickDetection.y >= gp.ui.boxY &&
+            ClickDetection.y <= gp.ui.boxY + gp.getTileSize()*1.25 &&
             Stats.cash >= nextLvlCost) {
                 if(upgradeDelay >= 10) {
                     callUpgrade = true;
@@ -151,4 +157,12 @@ public class Tower extends Entity{
     public void upgrade() {
 
     }
+
+    public String toString() {
+        return "2";
+    }
+    public boolean equals(Entity other) {
+        return other == this;
+    }
+
 }

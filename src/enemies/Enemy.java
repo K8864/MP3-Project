@@ -100,4 +100,10 @@ public class Enemy extends Entity {
         }
     }
 
+    public String toString() {
+        return ";";
+    }
+    public boolean equals(Entity other) {
+        return other == this;
+    }
 }
