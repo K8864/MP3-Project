@@ -1,7 +1,6 @@
 package main;
 
 import player.*;
-import waves.Waves;
 
 import java.awt.*;
 
@@ -21,23 +20,7 @@ public class UI {
     public void draw(Graphics2D g2) {
         this.g2 = g2;
         g2.setFont(font);
-        if(GamePanel.gameState == GamePanel.titleState) {
-            drawTitleScreen();
-        }
-        else if(GamePanel.gameState == GamePanel.playState) {
-            if(!Tower.click)
-                drawSide();
-            g2.setColor(Color.GREEN);
-            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
-            g2.drawString("$" + Stats.cash, centerSideX("$" + Stats.cash, g2), gp.getScreenHeight()-gp.getTileSize());
-            g2.setColor(Color.BLACK);
-            g2.fillRect(gp.getScreenWidth() + 25, gp.getScreenHeight() - gp.getTileSize()*3, (int)(Stats.maxHp * 0.6), (gp.getTileSize()));
-            g2.setColor(Color.RED);
-            g2.fillRect(gp.getScreenWidth() + 25, gp.getScreenHeight() - gp.getTileSize()*3, (int)(Stats.hp * 0.6), (gp.getTileSize()));
-            g2.setColor(Color.WHITE);
-            g2.drawString("HP: " + Stats.hp, gp.getScreenWidth() + 25, gp.getScreenHeight() - (int)(gp.getTileSize()*2.25));
-        }
-        else {
+        if(GamePanel.gameState == GamePanel.deadState){
             drawDeadScreen();
             drawSide();
             g2.setColor(Color.GREEN);
@@ -49,6 +32,23 @@ public class UI {
             g2.fillRect(gp.getScreenWidth() + 25, gp.getScreenHeight() - gp.getTileSize()*3, (int)(Stats.hp * 0.6), (gp.getTileSize()));
             g2.setColor(Color.WHITE);
             g2.drawString("HP: " + Stats.hp, gp.getScreenWidth() + 25, gp.getScreenHeight() - (int)(gp.getTileSize()*2.25));
+        }
+
+        if(!Tower.click && GamePanel.gameState == GamePanel.playState)
+            drawSide();
+        g2.setColor(Color.GREEN);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+        g2.drawString("$" + Stats.cash, centerSideX("$" + Stats.cash, g2), gp.getScreenHeight()-gp.getTileSize());
+        g2.setColor(Color.BLACK);
+        g2.fillRect(gp.getScreenWidth() + 25, gp.getScreenHeight() - gp.getTileSize()*3, (int)(Stats.maxHp * 0.6), (gp.getTileSize()));
+        g2.setColor(Color.RED);
+        g2.fillRect(gp.getScreenWidth() + 25, gp.getScreenHeight() - gp.getTileSize()*3, (int)(Stats.hp * 0.6), (gp.getTileSize()));
+        g2.setColor(Color.WHITE);
+        g2.drawString("HP: " + Stats.hp, gp.getScreenWidth() + 25, gp.getScreenHeight() - (int)(gp.getTileSize()*2.25));
+        if(GamePanel.gameState == GamePanel.titleState) {
+            g2.setColor(new Color(0, 188, 20));
+            g2.fillRect(gp.getScreenWidth(), 0, 200, gp.getScreenHeight());
+            drawTitleScreen();
         }
     }
 
@@ -160,7 +160,7 @@ public class UI {
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
         x -= 7;
         y += 2*gp.getTileSize();
-        g2.drawString("$800", x, y);
+        g2.drawString("$500", x, y);
         y -= 2*gp.getTileSize();
     }
 

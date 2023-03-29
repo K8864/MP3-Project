@@ -3,11 +3,10 @@ package main;
 import enemies.*;
 import player.*;
 import tile.TileManager;
-import waves.Waves;
+import wave.Waves;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 import java.util.*;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -185,9 +184,8 @@ public class GamePanel extends JPanel implements Runnable {
         long drawStart = 0;
         if (keyH.isShowDrawTime())
             drawStart = System.nanoTime();
-
+        tileM.draw(g2);
         if(gameState != titleState) {
-            tileM.draw(g2);
             if (t != null) {
                 if (Tower.selecting)
                     t.draw2(g2);
