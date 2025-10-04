@@ -4,6 +4,7 @@ import main.GamePanel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -38,7 +39,7 @@ public class Bullet extends Entity{
 
     public void getBulletImage() {
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/bullet/Bullet.png"));
+            image = ImageIO.read(new FileInputStream("res/bullet/Bullet.png"));
         }
         catch (IOException e) {
             e.printStackTrace();

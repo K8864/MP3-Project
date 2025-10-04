@@ -10,12 +10,12 @@ public class Sound{
     FloatControl fc;
 
     public Sound() {
-        soundURL[0] = getClass().getResource("/sounds/MachineGun.wav");
-        soundURL[1] = getClass().getResource("/sounds/Pizzle.wav");
-        soundURL[2] = getClass().getResource("/sounds/Pop.wav");
-        soundURL[3] = getClass().getResource("/sounds/Shotgun.wav");
-        soundURL[4] = getClass().getResource("/sounds/Sniper.wav");
-        soundURL[5] = getClass().getResource("/sounds/Spawn.wav");
+        soundURL[0] = Sound.class.getResource("res/sounds/MachineGun.wav");
+        soundURL[1] = Sound.class.getResource("res/sounds/Pizzle.wav");
+        soundURL[2] = Sound.class.getResource("res/sounds/Pop.wav");
+        soundURL[3] = Sound.class.getResource("res/sounds/Shotgun.wav");
+        soundURL[4] = Sound.class.getResource("res/sounds/Sniper.wav");
+        soundURL[5] = Sound.class.getResource("res/sounds/Spawn.wav");
     }
 
     public void setFile(int i) {
@@ -27,7 +27,7 @@ public class Sound{
             fc = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         }
         catch(Exception e) {
-
+            System.out.println(e);
         }
     }
 

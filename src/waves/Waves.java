@@ -4,6 +4,7 @@ import enemies.*;
 import main.GamePanel;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class Waves {
 
     public void readWave(int wave) {
         try {
-            InputStream is = getClass().getResourceAsStream("/waves/wave" + wave + ".txt");
+            InputStream is = new FileInputStream("src/waves/Waves" + wave + ".txt");
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             int spawns = Integer.parseInt(br.readLine());
             for(int i=0; i<spawns; i++) {
@@ -39,7 +40,7 @@ public class Waves {
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            // throw new RuntimeException(e);
         }
     }
 

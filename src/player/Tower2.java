@@ -3,6 +3,8 @@ package player;
 import main.GamePanel;
 
 import javax.imageio.ImageIO;
+
+import java.io.FileInputStream;
 import java.io.IOException;
 
 public class Tower2 extends Tower{
@@ -34,8 +36,8 @@ public class Tower2 extends Tower{
 
     public void getTowerImage() {
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/towers/Sniper1.png"));
-            image2 = ImageIO.read(getClass().getResourceAsStream("/towers/Sniper2.png"));
+            image = ImageIO.read(new FileInputStream("res/towers/Sniper1.png"));
+            image2 = ImageIO.read(new FileInputStream("res/towers/Sniper2.png"));
         }
         catch (IOException e) {
             e.printStackTrace();

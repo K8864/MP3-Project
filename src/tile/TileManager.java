@@ -21,7 +21,7 @@ public class TileManager {
         tile = new Tile[10];
         getTileImage();
         mapTileNum = new int[gp.getMaxScreenCol()][gp.getMaxScreenRow()];
-        loadMap("/maps/Big.txt");
+        loadMap("res/maps/Big.txt");
     }
 
     public void getTileImage(){
@@ -41,7 +41,7 @@ public class TileManager {
         UtilityTool uTool = new UtilityTool();
         try {
             tile[index] = new Tile();
-            tile[index].setImage(ImageIO.read(getClass().getResourceAsStream("/tiles/" + imagePath + ".png")));
+            tile[index].setImage(ImageIO.read(new FileInputStream("res/tiles/" + imagePath + ".png")));
             tile[index].setImage(uTool.scaleImage(tile[index].getImage(), gp.getTileSize(), gp.getTileSize()));
             tile[index].setPath(path);
             tile[index].setWater(water);
@@ -53,7 +53,7 @@ public class TileManager {
 
     public void loadMap(String filePath){
         try {
-            InputStream is = getClass().getResourceAsStream(filePath);
+            InputStream is = new FileInputStream(filePath);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             int col = 0;
             int row = 0;

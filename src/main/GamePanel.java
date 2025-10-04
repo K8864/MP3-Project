@@ -224,9 +224,14 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void playSE(int i, int v) {
-        sound.setFile(i);
-        sound.scaleVol(v);
-        sound.play();
+        try {
+            sound.setFile(i);
+            sound.scaleVol(v);
+            sound.play();
+        }
+        catch(Exception E) {
+            
+        }
     }
     // This meets 9 ix, subclasses of Enemy are being put through this
     private static class EnemyComparator implements Comparator<Enemy> {

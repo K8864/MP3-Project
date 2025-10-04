@@ -4,6 +4,8 @@ import main.GamePanel;
 import player.Entity;
 
 import javax.imageio.ImageIO;
+
+import java.io.FileInputStream;
 import java.io.IOException;
 
 public class Yellow extends Enemy{
@@ -18,7 +20,7 @@ public class Yellow extends Enemy{
 
     public void getEnemyImage() {
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/enemy/Yellow.png"));
+            image = ImageIO.read(new FileInputStream("res/enemy/Yellow.png"));
         }
         catch (IOException e) {
             e.printStackTrace();
